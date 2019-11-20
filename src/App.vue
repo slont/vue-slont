@@ -17,6 +17,7 @@
   @import "assets/sass/global.sass"
 
   #app
+    text-align: center
     #nav
       padding: 30px
       a
