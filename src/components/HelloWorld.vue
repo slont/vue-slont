@@ -26,7 +26,7 @@
 <style lang="sass" scoped>
   h3
     margin: 40px 0 0
-    color: $text-color
+    color: $color
   ul
     list-style-type: none
     padding: 0
