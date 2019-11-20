@@ -4,13 +4,12 @@
     HelloWorld(msg="Welcome to Your Vue.js App")
 </template>
 
-<script>
+<script lang="ts">
+  import Vue from 'vue'
   import HelloWorld from '@/components/HelloWorld.vue'
 
-  export default {
+  export default Vue.extend({
     name: 'home',
-    components: {
-      HelloWorld
-    }
-  }
+    components: {HelloWorld}
+  })
 </script>

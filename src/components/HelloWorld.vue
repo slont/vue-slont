@@ -18,7 +18,7 @@
   export default Vue.extend({
     name: 'HelloWorld',
     props: {
-      msg: String,
+      msg: String
     }
   })
 </script>
