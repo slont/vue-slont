@@ -39,10 +39,12 @@
     "@vue/test-utils": "1.0.0-beta.29",
     "eslint": "^6.6.0",
     "eslint-plugin-vue": "^6.0.1",
+    "flush-promises": "^1.0.2",
     "pug": "^2.0.4",
     "pug-plain-loader": "^1.0.0",
-    "sass": "^1.19.0",
+    "sass": "^1.23.7",
     "sass-loader": "^8.0.0",
+    "ts-jest": "^24.1.0",
     "typescript": "~3.7.2",
     "vue-template-compiler": "^2.6.10",
     "webpack-bundle-analyzer": "^3.6.0"
