@@ -10,12 +10,15 @@ module.exports = {
     }
   },
   configureWebpack: {
-    plugins: process.env.VUE_ANALYZE ? [new BundleAnalyzerPlugin()] : []
+    plugins: 'true' === process.env.VUE_ANALYZE ? [new BundleAnalyzerPlugin()] : []
   },
   pwa: {
-    workboxOptions: {
-      skipWaiting: true,
-      clientsClaim: true
-    }
+    name: 'My App',
+    themeColor: '#4DBA87',
+    msTileColor: '#000000',
+    appleMobileWebAppCapable: 'yes',
+    appleMobileWebAppStatusBarStyle: 'black',
+    skipWaiting: true,
+    clientsClaim: true
   }
 }
