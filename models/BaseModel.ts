@@ -44,14 +44,14 @@ export default abstract class BaseModel {
         .catch(this.postError.bind(this))
   }
 
-  public async put(id: string | number | number, data = {}, config: AxiosRequestConfig = {}) {
+  public async put(id: string | number, data = {}, config: AxiosRequestConfig = {}) {
     return this.axios
         .put(`${id}`, data, config)
         .then(this.postFetch.bind(this))
         .catch(this.postError.bind(this))
   }
 
-  public async patch(id: string | number | number, data = {}, config: AxiosRequestConfig = {}) {
+  public async patch(id: string | number, data = {}, config: AxiosRequestConfig = {}) {
     return this.axios
         .patch(`${id}`, data, config)
         .then(this.postFetch.bind(this))
@@ -72,15 +72,20 @@ export default abstract class BaseModel {
   }
 
   protected postError(error: AxiosError) {
-    if (error.response) {
+    if (!!error.response) {
       return Promise.reject(error)
     }
-    const data = 'Network Error' === error.message ?
-        {code: '900', message: '通信エラー'} :
-        {code: '990', message: '予期せぬエラーが発生しました'}
-    return Promise.reject({response: {
-      data: Object.assign({errors: []}, data, error)}
-    })
+
+    const data = {code: '990', message: '予期せぬエラーが発生しました', errors: []}
+    if ('ECONNABORTED' === error.code) {
+      Object.assign(data, {code: '910', message: '接続タイムアウト'})
+    } else if (!!error.isAxiosError && !error.response) {
+      Object.assign(data, {code: '900', message: 'ネットワークエラー'})
+    }
+    return Promise.reject(Object.assign({
+      response: {data},
+      error
+    }))
   }
 
   protected deserialize(part = {}): any {
