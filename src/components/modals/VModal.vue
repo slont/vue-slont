@@ -113,3 +113,108 @@
     }
   })
 </script>
+
+<style lang="sass">
+  .overlay
+    position: absolute
+    bottom: 0
+    left: 0
+    right: 0
+    top: 0
+
+  .v-modal
+    @extend .overlay
+    align-items: center
+    display: flex
+    flex-direction: column
+    justify-content: center
+    overflow: hidden
+    position: fixed
+    z-index: 40
+
+    &-backdrop
+      @extend .overlay
+      background-color: $modal-backdrop-color
+
+    &-card
+      max-height: 100vh
+      overflow: auto
+      position: relative
+      width: 100%
+      max-width: 960px
+      > :first-child
+        border-top-left-radius: $modal-radius
+        border-top-right-radius: $modal-radius
+      > :last-child
+        border-bottom-left-radius: $modal-radius
+        border-bottom-right-radius: $modal-radius
+
+    &-close
+      position: fixed
+      right: 20px
+      top: 20px
+      background: none
+      height: 32px
+      max-height: 32px
+      min-height: 32px
+      width: 32px
+      max-width: 32px
+      min-width: 32px
+      -moz-appearance: none
+      -webkit-appearance: none
+      //background-color: rgba($scheme-invert, 0.2)
+      border: none
+      border-radius: 50%
+      cursor: pointer
+      pointer-events: auto
+      display: inline-block
+      flex-grow: 0
+      flex-shrink: 0
+      font-size: 0
+      outline: none
+      vertical-align: top
+      &::before,
+      &::after
+        //background-color: $scheme-main
+        content: ""
+        display: block
+        left: 50%
+        position: absolute
+        top: 50%
+        transform: translateX(-50%) translateY(-50%) rotate(45deg)
+        transform-origin: center center
+      &::before
+        height: 2px
+        width: 50%
+      &::after
+        height: 50%
+        width: 2px
+
+    &-card
+      display: flex
+      flex-direction: column
+      max-height: 100vh
+      overflow: hidden
+      -ms-overflow-y: visible
+
+    &-card-head,
+    &-card-foot
+      position: relative
+      display: flex
+      flex-shrink: 0
+      justify-content: flex-start
+      align-items: center
+      padding: $modal-padding
+      background-color: $modal-bg-color
+
+    &-card-title
+      flex-grow: 1
+      flex-shrink: 0
+
+    &-card-body
+      flex-grow: 1
+      flex-shrink: 1
+      padding: $modal-padding
+      background-color: $modal-bg-color
+      overflow: auto
+</style>
