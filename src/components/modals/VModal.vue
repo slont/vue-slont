@@ -54,12 +54,10 @@
       const query = Object.assign({}, this.$route.query, {modal: this.uid})
       await this.$router.push({query})
     },
-    async beforeMount() {
+    mounted() {
       window.addEventListener('popstate', this.onBack)
       document.addEventListener('keyup', this.keyPress)
       document.body.appendChild(this.$el)
-    },
-    mounted() {
       this.active = true
       if (this.scroll === 'clip') {
         document.documentElement.classList.add('clipped')
