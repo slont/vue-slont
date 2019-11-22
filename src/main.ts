@@ -4,6 +4,7 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import mixin from './mixins/common'
+import './plugins/v-button'
 
 Vue.config.productionTip = false
 
