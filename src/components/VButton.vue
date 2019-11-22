@@ -2,7 +2,7 @@
   button.v-button(:class="{'processing': computedProcessing}"
                   :disabled="disabled || computedProcessing"
                   @click.stop="onClick")
-    slot
+    span: slot
 </template>
 
 <script lang="ts">
