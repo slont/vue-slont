@@ -7,5 +7,5 @@ export interface UserState {
 }
 
 export interface ModalState {
-  modals: number[]
+  items: number[]
 }

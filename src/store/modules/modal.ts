@@ -2,21 +2,21 @@ import {GetterTree, MutationTree, ActionTree} from 'vuex'
 import {ModalState, State} from '@/types'
 
 const state: ModalState = {
-  modals: []
+  items: []
 }
 
 const getters: GetterTree<ModalState, State> = {
   isLast: state => (uid: number) => {
-    return state.modals.slice(-1)[0] === uid
+    return state.items.slice(-1)[0] === uid
   }
 }
 
 const mutations: MutationTree<ModalState> = {
   push(state, uid) {
-    state.modals.push(uid)
+    state.items.push(uid)
   },
   remove(state, uid) {
-    state.modals = state.modals.filter((it: number) => it !== uid)
+    state.items = state.items.filter((it: number) => it !== uid)
   }
 }
 

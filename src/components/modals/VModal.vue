@@ -37,7 +37,8 @@
     data() {
       return {
         active: false,
-        forceClose: false
+        forceClose: false,
+        callback: () => {}
       }
     },
     computed: {
@@ -74,19 +75,22 @@
     },
     methods: {
       async close() {
-        if (!this.canCancel && !this.forceClose) return
+        if (!this.canCancel) return
 
-        await this.$router.go(-1)
+        await this.$router.back()
       },
-      async closeForce() {
+      closeForce(callback = () => {}) {
         this.forceClose = true
-        await this.close()
+        this.callback = callback
+        this.$router.back()
       },
       onBack() {
         const uid = this.uid
-        if (this.active && this.isLast) {
+        if (this.active && this.isLast && uid !== Number(this.$route.query.modal)) {
           if (this.canCancel || this.forceClose) {
             this.active = false
+            this.$store.commit('modal/remove', uid)
+            this.callback()
             setTimeout(() => {
               this.$destroy()
               if (typeof this.$el.remove !== 'undefined') {
@@ -94,10 +98,9 @@
               } else if (typeof this.$el.parentNode !== 'undefined') {
                 this.$el.parentNode!.removeChild(this.$el)
               }
-              this.$store.commit('modal/remove', uid)
             }, 150)
           } else {
-            history.forward()
+            this.$router.forward()
           }
         }
       },
