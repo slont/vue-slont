@@ -5,3 +5,7 @@ export interface UserState {
   id: string
   name: string
 }
+
+export interface ModalState {
+  modals: number[]
+}
