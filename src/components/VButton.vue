@@ -41,4 +41,6 @@
 <style lang="sass" scoped>
   .v-button
     transition: all .2s ease
+    > span
+      display: inline-flex
 </style>

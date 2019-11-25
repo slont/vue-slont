@@ -23,7 +23,6 @@ describe('VModal.vue', () => {
       localVue,
       propsData: {
         component: BasicModal,
-        canCancel: false,
         props: {
           title: 'BasicModal',
           message: 'test',

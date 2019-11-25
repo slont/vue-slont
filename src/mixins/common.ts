@@ -1,6 +1,11 @@
 import dayjs from 'dayjs'
 
 export default {
+  computed: {
+    version(): string {
+      return require('../../package.json').version
+    }
+  },
   filters: {
     toLocaleStr: (val: string | number, defaultValue: string = '-') => {
       const num = Number(val)
@@ -16,11 +21,6 @@ export default {
         return template.replace(/\w/g, '-')
       }
       return result
-    }
-  },
-  computed: {
-    version(): string {
-      return require('../../package.json').version
     }
   }
 }

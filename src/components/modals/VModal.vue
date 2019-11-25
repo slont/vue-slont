@@ -2,19 +2,24 @@
   transition(:name="animation")
     div.v-modal(v-if="active" :class="customClass" tabindex="-1")
       div.v-modal-backdrop(@click="close")
-      button.v-modal-close.large(v-if="canCancel" type="button" @click="close")
+      button.v-modal-close.large(v-if="closable" type="button" @click="close")
 
-      component.v-modal-card(:is="component" v-bind="props" @close="closeForce")
+      component.v-modal-card(:is="component"
+        v-bind="props"
+        v-on="events"
+        @close="closeForce"
+        @update:closable="setClosable"
+        @update:cb-blocked="setCallbackBlocked")
 </template>
 
 <script lang="ts">
-  import Vue, {PropType} from 'vue'
+  import Vue from 'vue'
 
   export default Vue.extend({
     props: {
-      vm: Object as PropType<Vue>,
       component: [Object, Function],
       props: Object,
+      events: Object,
       width: {
         type: String,
         default: '960'
@@ -22,10 +27,6 @@
       animation: {
         type: String,
         default: 'zoom-out'
-      },
-      canCancel: {
-        type: Boolean,
-        default: true
       },
       scroll: {
         type: String,
@@ -38,7 +39,9 @@
       return {
         active: false,
         forceClose: false,
-        callback: () => {}
+        closable: true,
+        callback: () => {},
+        callbackBlocked: () => {}
       }
     },
     computed: {
@@ -59,7 +62,7 @@
       document.addEventListener('keyup', this.keyPress)
       document.body.appendChild(this.$el)
       this.active = true
-      if (this.scroll === 'clip') {
+      if ('clip' === this.scroll) {
         document.documentElement.classList.add('clipped')
       } else {
         document.body.classList.add('noscroll')
@@ -73,7 +76,7 @@
     },
     methods: {
       async close() {
-        if (!this.canCancel) return
+        if (!this.closable) return
 
         await this.$router.back()
       },
@@ -82,23 +85,30 @@
         this.callback = callback
         this.$router.back()
       },
+      setClosable(closable = true) {
+        this.closable = closable
+      },
+      setCallbackBlocked(callback = () => {}) {
+        this.callbackBlocked = callback
+      },
       onBack() {
         const uid = this.uid
         if (this.active && this.isLast && uid !== Number(this.$route.query.modal)) {
-          if (this.canCancel || this.forceClose) {
+          if (this.closable || this.forceClose) {
             this.active = false
             this.$store.commit('modal/remove', uid)
             this.callback()
             setTimeout(() => {
               this.$destroy()
-              if (typeof this.$el.remove !== 'undefined') {
+              if ('undefined' !== typeof this.$el.remove) {
                 this.$el.remove()
-              } else if (typeof this.$el.parentNode !== 'undefined') {
+              } else if ('undefined' !== typeof this.$el.parentNode) {
                 this.$el.parentNode!.removeChild(this.$el)
               }
             }, 150)
           } else {
             this.$router.forward()
+            this.callbackBlocked()
           }
         }
       },
@@ -129,6 +139,27 @@
     overflow: hidden
     position: fixed
     z-index: 40
+    &.is-full-screen
+      .v-modal-close
+        display: none
+      .v-modal-backdrop
+        opacity: .5
+        pointer-events: none
+      .v-modal-card-foot
+        border-radius: 0
+      .v-modal-card
+        height: 100vh
+        width: 100%
+        > :first-child
+          border-top-left-radius: 0
+          border-top-right-radius: 0
+        > :last-child
+          border-bottom-left-radius: 0
+          border-bottom-right-radius: 0
+    &.delete-modal
+      .v-modal-card-foot
+        flex-direction: row-reverse
+        align-items: baseline
 
     &-backdrop
       @extend .overlay
@@ -138,7 +169,7 @@
       max-height: 100vh
       overflow: auto
       position: relative
-      width: 100%
+      width: calc(100% - 1.5rem)
       max-width: 960px
       > :first-child
         border-top-left-radius: $modal-radius
@@ -200,7 +231,7 @@
       position: relative
       display: flex
       flex-shrink: 0
-      justify-content: flex-start
+      justify-content: space-around
       align-items: center
       padding: $modal-padding
       background-color: $modal-bg-color
@@ -208,6 +239,8 @@
     &-card-title
       flex-grow: 1
       flex-shrink: 0
+      text-align: center
+      font-weight: bold
 
     &-card-body
       flex-grow: 1
