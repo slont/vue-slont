@@ -2,7 +2,7 @@
   button.v-button(:class="{'processing': computedProcessing}"
                   :disabled="disabled || computedProcessing"
                   @click.stop="onClick")
-    slot
+    span: slot
 </template>
 
 <script lang="ts">
@@ -41,4 +41,6 @@
 <style lang="sass" scoped>
   .v-button
     transition: all .2s ease
+    > span
+      display: inline-flex
 </style>

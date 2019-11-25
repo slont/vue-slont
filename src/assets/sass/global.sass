@@ -1,4 +1,5 @@
 @import "variables"
+@import "animation"
 
 html
   font-size: 16px
@@ -24,6 +25,9 @@ body
 body, button, input, select, textarea
   letter-spacing: .75px
 
+p
+  margin: 0
+
 nav ul
   list-style: none
   li
@@ -43,6 +47,14 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button
   margin: 0
   -webkit-appearance: none
+
+.noscroll
+  position: fixed
+  overflow-y: hidden
+  width: 100%
+  bottom: 0
+.clipped
+  overflow: hidden !important
 
 .fixed-bottom
   position: fixed

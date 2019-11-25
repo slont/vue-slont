@@ -14,8 +14,6 @@
 </script>
 
 <style lang="sass">
-  @import "assets/sass/global.sass"
-
   #app
     text-align: center
     #nav
